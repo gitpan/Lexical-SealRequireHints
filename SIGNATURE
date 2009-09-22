@@ -1,0 +1,43 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.55.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It will check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 bed7bd31f5b62ef81a5457b9f75013e7ca4aaf62 .cvsignore
+SHA1 99889fe6e478a6f0d6eb831073a5efe83b0db7d8 Build.PL
+SHA1 36eeff339cf442a99d54dc768077c72d4909a8b6 Changes
+SHA1 a4285b6b78f2edc3b51fa7792f31ec612c249347 MANIFEST
+SHA1 b7f2c4786e9748c125d6008eb368e4e15227cf01 META.yml
+SHA1 684ab827ae5405876abe203f5a032ffa6b575cf7 Makefile.PL
+SHA1 b98f9ac4b77108060bf0135574d662b59b098c6c README
+SHA1 e0daf5c8253b0d834ba0d20236568b20ebdc400e lib/Lexical/.cvsignore
+SHA1 86c2ee4202e2e3dc68a5eeff7d2eb3f3be6fa348 lib/Lexical/SealRequireHints.pm
+SHA1 d418246e8340393db29a23245cd4336355e73c28 lib/Lexical/SealRequireHints.xs
+SHA1 83fc27c54c3d1d7cb1f08db2fbc6735d030fba99 t/pod_cvg.t
+SHA1 74a957cd8b93f25672ecc6aa578a671d084dd343 t/pod_syn.t
+SHA1 bc7eac65b9d8a798a2e9742dc13d1bad2fd167eb t/seal.t
+SHA1 6d96cc6cad17233849e62bf942c79a15d71b8f66 t/seal_0.pm
+SHA1 612671f20a7ea92e0f38036ce44ce6cfd7a40e35 t/seal_1.pm
+SHA1 77fb76f802a2669291950d830979738ba34ebd71 t/seal_2.pm
+SHA1 8bebdc1f1032ee7e2c3448b8c08eb68a30eaac3f t/seal_3.pm
+SHA1 e8478e388c78af43a2f3b50dd4c2d647dbd3b9ef t/seal_4.pm
+SHA1 bf9f3734c090121ff387eb85351b8abe17d6cff6 t/seal_pp.t
+SHA1 03c5868a4086a0df024503fa217e36204d8d95a0 t/setup_pp.pl
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.4.9 (GNU/Linux)
+
+iEYEARECAAYFAkq5IV4ACgkQOV9mt2VyAVEy1wCeMO74FKaoEiMlpBebtFYRv2EL
+iSoAn1ISkKmCLkltF7/H0j0z4SNQ2WJw
+=zYbb
+-----END PGP SIGNATURE-----
