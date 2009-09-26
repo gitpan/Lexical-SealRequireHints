@@ -1,3 +1,17 @@
+version 0.001; 2009-09-26
+
+  * bugfix: die cleanly if the pure-Perl implementation is needed but
+    won't work (which occurs on pre-5.8 perls)
+
+  * bugfix: avoid undesired warning from pure-Perl implementation if
+    require has already been overridden via CORE::GLOBAL::require
+
+  * in tests, set HINT_LOCALIZE_HH where appropriate, to avoid false
+    test failures on pre-5.10 perls
+
+  * test that the module plays nicely with code that overrides require
+    via CORE::GLOBAL::require
+
 version 0.000; 2009-09-22
 
   * initial released version

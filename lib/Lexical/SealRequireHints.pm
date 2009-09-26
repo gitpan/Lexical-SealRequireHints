@@ -37,13 +37,15 @@ package Lexical::SealRequireHints;
 use warnings;
 use strict;
 
-our $VERSION = "0.000";
+our $VERSION = "0.001";
 
 unless(eval { local $SIG{__DIE__};
 	require XSLoader;
 	XSLoader::load(__PACKAGE__, $VERSION);
 	1;
 }) {
+	die "pure Perl version of @{[__PACKAGE__]} can't work on pre-5.8 perl"
+		unless $] >= 5.008;
 	my $done;
 	*import = sub {
 		die "$_[0] does not take any importation arguments\n"
@@ -52,6 +54,7 @@ unless(eval { local $SIG{__DIE__};
 		$done = 1;
 		our $next_require = defined(&CORE::GLOBAL::require) ?
 			\&CORE::GLOBAL::require : sub { CORE::require($_[0]) };
+		no warnings "redefine";
 		*CORE::GLOBAL::require = sub {
 			die "wrong number of arguments to require\n"
 				unless @_ == 1;

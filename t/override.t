@@ -1,0 +1,55 @@
+use warnings;
+use strict;
+
+BEGIN {
+	if($] < 5.008) {
+		require Test::More;
+		Test::More::plan(skip_all =>
+			"CORE::GLOBAL::require can't work on this perl");
+	}
+}
+
+use Test::More tests => 9;
+
+our @require_activity;
+
+BEGIN {
+	my $next_require = defined(&CORE::GLOBAL::require) ?
+		\&CORE::GLOBAL::require : sub { CORE::require($_[0]) };
+	no warnings "redefine";
+	*CORE::GLOBAL::require = sub {
+		push @require_activity, "a";
+		return $next_require->(@_);
+	};
+}
+
+BEGIN { use_ok "Lexical::SealRequireHints"; }
+
+BEGIN {
+	my $next_require = defined(&CORE::GLOBAL::require) ?
+		\&CORE::GLOBAL::require : sub { CORE::require($_[0]) };
+	no warnings "redefine";
+	*CORE::GLOBAL::require = sub {
+		push @require_activity, "b";
+		return $next_require->(@_);
+	};
+}
+
+BEGIN {
+	$^H |= 0x20000 if $] < 5.009004;
+	$^H{"Lexical::SealRequireHints/test"} = 1;
+}
+
+BEGIN {
+	is $^H{"Lexical::SealRequireHints/test"}, 1;
+	@require_activity = ();
+}
+use t::seal_0;
+BEGIN {
+	is $^H{"Lexical::SealRequireHints/test"}, 1;
+	is $^H{"Lexical::SealRequireHints/test0"}, 1;
+	isnt scalar(@require_activity), 0;
+	is_deeply \@require_activity, [("b","a") x (@require_activity>>1)];
+}
+
+1;

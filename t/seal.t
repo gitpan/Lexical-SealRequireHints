@@ -5,7 +5,10 @@ use Test::More tests => 21;
 
 BEGIN { use_ok "Lexical::SealRequireHints"; }
 
-BEGIN { $^H{"Lexical::SealRequireHints/test"} = 1; }
+BEGIN {
+	$^H |= 0x20000 if $] < 5.009004;
+	$^H{"Lexical::SealRequireHints/test"} = 1;
+}
 
 BEGIN { is $^H{"Lexical::SealRequireHints/test"}, 1; }
 use t::seal_0;

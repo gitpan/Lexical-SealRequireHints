@@ -8,6 +8,8 @@ README
 lib/Lexical/.cvsignore
 lib/Lexical/SealRequireHints.pm
 lib/Lexical/SealRequireHints.xs
+t/override.t
+t/override_pp.t
 t/pod_cvg.t
 t/pod_syn.t
 t/seal.t

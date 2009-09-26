@@ -34,7 +34,6 @@ Module::Build->subclass(code => q{
 	}
 })->new(
 	module_name => "Lexical::SealRequireHints",
-	dist_version => "0.000",
 	license => "perl",
 	build_requires => {
 		"Module::Build" => 0,
