@@ -9,7 +9,16 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 9;
+use Test::More tests => 10;
+
+our $have_runtime_hint_hash;
+BEGIN { $have_runtime_hint_hash = $] >= 5.009004; }
+sub test_runtime_hint_hash($$) {
+	SKIP: {
+		skip "no runtime hint hash", 1 unless $have_runtime_hint_hash;
+		is +((caller(0))[10] || {})->{$_[0]}, $_[1];
+	}
+}
 
 our @require_activity;
 

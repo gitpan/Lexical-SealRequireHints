@@ -6,6 +6,7 @@ use strict;
 use Test::More;
 
 BEGIN { is $^H{"Lexical::SealRequireHints/test"}, undef; }
+main::test_runtime_hint_hash "Lexical::SealRequireHints/test", undef;
 
 is $^H{"Lexical::SealRequireHints/test"}, undef;
 

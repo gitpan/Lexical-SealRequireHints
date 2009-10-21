@@ -1,3 +1,14 @@
+version 0.002; 2009-10-21
+
+  * generate a more normal-looking op tree, that doesn't crash B::Deparse
+
+  * don't apply the workaround on Perl 5.11.0 or later, where the bug
+    has been fixed
+
+  * in t/seal.t, test that cop_hints_hash is properly handled
+
+  * check for required Perl version at runtime
+
 version 0.001; 2009-09-26
 
   * bugfix: die cleanly if the pure-Perl implementation is needed but
