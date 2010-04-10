@@ -1,4 +1,4 @@
-if($] < 5.008) {
+if("$]" < 5.008) {
 	require Test::More;
 	Test::More::plan(skip_all =>
 		"pure Perl Lexical::SealRequireHints can't work on this perl");

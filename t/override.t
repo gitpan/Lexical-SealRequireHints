@@ -2,7 +2,7 @@ use warnings;
 use strict;
 
 BEGIN {
-	if($] < 5.008) {
+	if("$]" < 5.008) {
 		require Test::More;
 		Test::More::plan(skip_all =>
 			"CORE::GLOBAL::require can't work on this perl");
@@ -12,7 +12,7 @@ BEGIN {
 use Test::More tests => 10;
 
 our $have_runtime_hint_hash;
-BEGIN { $have_runtime_hint_hash = $] >= 5.009004; }
+BEGIN { $have_runtime_hint_hash = "$]" >= 5.009004; }
 sub test_runtime_hint_hash($$) {
 	SKIP: {
 		skip "no runtime hint hash", 1 unless $have_runtime_hint_hash;
@@ -45,7 +45,7 @@ BEGIN {
 }
 
 BEGIN {
-	$^H |= 0x20000 if $] < 5.009004;
+	$^H |= 0x20000 if "$]" < 5.009004;
 	$^H{"Lexical::SealRequireHints/test"} = 1;
 }
 

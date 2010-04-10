@@ -10,6 +10,9 @@ lib/Lexical/SealRequireHints.pm
 lib/Lexical/SealRequireHints.xs
 t/override.t
 t/override_pp.t
+t/package.t
+t/package_0.pm
+t/package_pp.t
 t/pod_cvg.t
 t/pod_syn.t
 t/seal.t

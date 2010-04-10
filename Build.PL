@@ -36,6 +36,13 @@ Module::Build->subclass(code => q{
 })->new(
 	module_name => "Lexical::SealRequireHints",
 	license => "perl",
+	configure_requires => {
+		"Module::Build" => 0,
+		"perl" => "5.006",
+	},
+	configure_recommends => {
+		"ExtUtils::CBuilder" => "0.15",
+	},
 	build_requires => {
 		"Module::Build" => 0,
 		"Test::More" => 0,

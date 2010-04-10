@@ -1,3 +1,23 @@
+version 0.003; 2010-04-10
+
+  * bugfix: in pure-Perl implementation, make sure ambient package (from
+    which require is invoked) is passed on correctly to the code in the
+    required file, on those Perls where it is so inherited
+
+  * in XS, use macros to avoid explicit passing of aTHX, in the manner
+    of the core
+
+  * in XS, avoid using "class" as a variable name, for compatibility
+    with C++ compilers
+
+  * make all numeric comparisons against $] stringify it first, to avoid
+    architecture-dependent problems with floating point rounding giving
+    it an unexpected numeric value
+
+  * in Build.PL, explicitly declare configure-time requirements
+
+  * add MYMETA.yml to .cvsignore
+
 version 0.002; 2009-10-21
 
   * generate a more normal-looking op tree, that doesn't crash B::Deparse

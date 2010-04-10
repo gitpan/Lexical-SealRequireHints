@@ -39,7 +39,7 @@ package Lexical::SealRequireHints;
 use warnings;
 use strict;
 
-our $VERSION = "0.002";
+our $VERSION = "0.003";
 
 if(eval { local $SIG{__DIE__};
 	require XSLoader;
@@ -47,14 +47,14 @@ if(eval { local $SIG{__DIE__};
 	1;
 }) {
 	# successfully loaded XS, nothing else to do
-} elsif($] >= 5.011) {
+} elsif("$]" >= 5.011) {
 	# bug not present
 	*import = sub {
 		die "$_[0] does not take any importation arguments\n"
 			unless @_ == 1;
 	};
 	*unimport = sub { die "$_[0] does not support unimportation\n" };
-} elsif($] >= 5.008) {
+} elsif("$]" >= 5.008) {
 	my $done;
 	*import = sub {
 		die "$_[0] does not take any importation arguments\n"
@@ -62,7 +62,25 @@ if(eval { local $SIG{__DIE__};
 		return if $done;
 		$done = 1;
 		our $next_require = defined(&CORE::GLOBAL::require) ?
-			\&CORE::GLOBAL::require : sub { CORE::require($_[0]) };
+			\&CORE::GLOBAL::require : sub {
+				my($arg) = @_;
+				# The shenanigans with $CORE::GLOBAL::{require}
+				# are required because if there's a
+				# &CORE::GLOBAL::require when the eval is
+				# executed then the CORE::require in there is
+				# interpreted as plain require on some Perl
+				# versions, leading to recursion.
+				my $grequire = $CORE::GLOBAL::{require};
+				delete $CORE::GLOBAL::{require};
+				my $result = eval q{
+					local $SIG{__DIE__};
+					$CORE::GLOBAL::{require} = $grequire;
+					package }.caller(0).q{;
+					CORE::require($arg);
+				};
+				die $@ if $@ ne "";
+				return $result;
+			};
 		no warnings "redefine";
 		*CORE::GLOBAL::require = sub {
 			die "wrong number of arguments to require\n"
@@ -70,6 +88,7 @@ if(eval { local $SIG{__DIE__};
 			my($arg) = @_;
 			my $result = eval q{
 				local $SIG{__DIE__};
+				package }.caller(0).q{;
 				delete $^H{$_}
 					foreach keys(%^H), qw($[ open< open>);
 				$next_require->($arg);
@@ -115,7 +134,7 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2009 Andrew Main (Zefram) <zefram@fysh.org>
+Copyright (C) 2009, 2010 Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 LICENSE
 

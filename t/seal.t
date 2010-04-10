@@ -4,7 +4,7 @@ use strict;
 use Test::More tests => 32;
 
 our $have_runtime_hint_hash;
-BEGIN { $have_runtime_hint_hash = $] >= 5.009004; }
+BEGIN { $have_runtime_hint_hash = "$]" >= 5.009004; }
 sub test_runtime_hint_hash($$) {
 	SKIP: {
 		skip "no runtime hint hash", 1 unless $have_runtime_hint_hash;
@@ -15,7 +15,7 @@ sub test_runtime_hint_hash($$) {
 BEGIN { use_ok "Lexical::SealRequireHints"; }
 
 BEGIN {
-	$^H |= 0x20000 if $] < 5.009004;
+	$^H |= 0x20000 if "$]" < 5.009004;
 	$^H{"Lexical::SealRequireHints/test"} = 1;
 }
 
