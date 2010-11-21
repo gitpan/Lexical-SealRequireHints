@@ -31,7 +31,21 @@ Module::Build->subclass(code => q{
 	sub find_xs_files {
 		my($self) = @_;
 		return {} unless $self->have_c_compiler;
+		# On MSWin32, the XS version of the workaround can't work
+		# properly, because it doesn't have access to the core
+		# symbols to let SAVEHINTS() work.
+		return {} if "$]" < 5.011 && $^O eq "MSWin32";
 		return $self->SUPER::find_xs_files;
+	}
+	sub compile_c {
+		my($self, $file, %args) = @_;
+		if("$]" < 5.011) {
+			# need PERL_CORE for working SAVEHINTS()
+			$args{defines} = { %{$args{defines} || {}},
+				PERL_CORE => 1,
+			};
+		}
+		return $self->SUPER::compile_c($file, %args);
 	}
 })->new(
 	module_name => "Lexical::SealRequireHints",
@@ -39,6 +53,8 @@ Module::Build->subclass(code => q{
 	configure_requires => {
 		"Module::Build" => 0,
 		"perl" => "5.006",
+		"strict" => 0,
+		"warnings" => 0,
 	},
 	configure_recommends => {
 		"ExtUtils::CBuilder" => "0.15",
@@ -61,6 +77,7 @@ Module::Build->subclass(code => q{
 	recommends => {
 		"XSLoader" => 0,
 	},
+	needs_compiler => 0,
 	dynamic_config => 1,
 	meta_add => { distribution_type => "module" },
 	create_makefile_pl => "passthrough",

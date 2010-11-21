@@ -1,4 +1,4 @@
-#define PERL_CORE 1   /* required in order to get working SAVEHINTS() */
+#define PERL_NO_GET_CONTEXT 1
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
@@ -9,20 +9,27 @@
 #define PERL_VERSION_GE(r,v,s) \
 	(PERL_DECIMAL_VERSION >= PERL_VERSION_DECIMAL(r,v,s))
 
-#if !PERL_VERSION_GE(5,11,0)
+#ifndef croak
+# define croak Perl_croak_nocontext
+#endif /* !croak */
 
-#define refcounted_he_free(he) Perl_refcounted_he_free(aTHX_ he)
+#define Q_MUST_WORKAROUND (!PERL_VERSION_GE(5,11,0))
+#define Q_HAVE_COP_HINTS_HASH PERL_VERSION_GE(5,9,4)
+
+#if Q_MUST_WORKAROUND
+
+# define refcounted_he_free(he) Perl_refcounted_he_free(aTHX_ he)
 
 static OP *pp_squashhints(pTHX)
 {
 	SAVEHINTS();
 	hv_clear(GvHV(PL_hintgv));
-# if PERL_VERSION_GE(5,9,4)
+# if Q_HAVE_COP_HINTS_HASH
 	if(PL_compiling.cop_hints_hash) {
 		refcounted_he_free(PL_compiling.cop_hints_hash);
 		PL_compiling.cop_hints_hash = NULL;
 	}
-# endif /* >=5.9.4 */
+# endif /* Q_HAVE_COP_HINTS_HASH */
 	return PL_op->op_next;
 }
 
@@ -49,22 +56,25 @@ static OP *myck_require(pTHX_ OP *op)
 	return op;
 }
 
-#endif /* <5.11.0 */
+#endif /* Q_MUST_WORKAROUND */
 
 MODULE = Lexical::SealRequireHints PACKAGE = Lexical::SealRequireHints
+
+PROTOTYPES: DISABLE
 
 void
 import(SV *classname)
 CODE:
-#if !PERL_VERSION_GE(5,11,0)
+	PERL_UNUSED_VAR(classname);
+#if Q_MUST_WORKAROUND
 	if(!nxck_require) {
 		nxck_require = PL_check[OP_REQUIRE];
 		PL_check[OP_REQUIRE] = myck_require;
 	}
-#endif /* <5.11.0 */
+#endif /* Q_MUST_WORKAROUND */
 
 void
 unimport(SV *classname, ...)
 CODE:
-	Perl_croak(aTHX_
-		"Lexical::SealRequireHints does not support unimportation");
+	PERL_UNUSED_VAR(classname);
+	croak("Lexical::SealRequireHints does not support unimportation");

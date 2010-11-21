@@ -14,6 +14,7 @@ t/package.t
 t/package_0.pm
 t/package_pp.t
 t/pod_cvg.t
+t/pod_cvg_pp.t
 t/pod_syn.t
 t/seal.t
 t/seal_0.pm

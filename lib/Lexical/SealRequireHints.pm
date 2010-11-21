@@ -39,7 +39,7 @@ package Lexical::SealRequireHints;
 use warnings;
 use strict;
 
-our $VERSION = "0.003";
+our $VERSION = "0.004";
 
 if(eval { local $SIG{__DIE__};
 	require XSLoader;

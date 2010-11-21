@@ -1,3 +1,37 @@
+version 0.004; 2010-11-21
+
+  * bugfix: don't attempt to use XS version of the workaround on Win32,
+    where it can't work properly due to linker restriction on access to
+    core symbols
+
+  * only define PERL_CORE for compilation on Perl versions where the
+    bug workaround (and thus interference with core-private stuff)
+    is actually necessary
+
+  * in XS, use PERL_NO_GET_CONTEXT for efficiency
+
+  * in XS, declare "PROTOTYPES: DISABLE" to prevent automatic generation
+    of unintended prototypes
+
+  * in XS, provide a reserve definition of croak, so that the Perl_croak
+    circumlocution is avoided even with PERL_CORE defined
+
+  * in XS, give symbolic names to the Perl version thresholds
+
+  * jump through hoops to avoid compiler warnings
+
+  * use full stricture in test suite
+
+  * also test POD coverage of pure Perl implementation
+
+  * in t/setup_pp.pl, avoid a warning that occurs if XSLoader::load()
+    is given no arguments, which is now a valid usage
+
+  * in Build.PL, explicitly set needs_compiler to avoid bogus
+    auto-dependency on ExtUtils::CBuilder
+
+  * in Build.PL, complete declaration of configure-time requirements
+
 version 0.003; 2010-04-10
 
   * bugfix: in pure-Perl implementation, make sure ambient package (from
