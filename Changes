@@ -1,3 +1,15 @@
+version 0.005; 2011-07-25
+
+  * bugfix: work around core bug [perl #73174] affecting Unicode swash
+    loading, and apply entire workaround arrangement to 5.11.{0..5}
+    where [perl #73174] exists but [perl #68590] does not
+
+  * correct dynamic_config setting to 0
+
+  * include META.json in distribution
+
+  * add MYMETA.json to .cvsignore
+
 version 0.004; 2010-11-21
 
   * bugfix: don't attempt to use XS version of the workaround on Win32,

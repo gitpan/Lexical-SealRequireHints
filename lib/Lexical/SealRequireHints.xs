@@ -13,7 +13,7 @@
 # define croak Perl_croak_nocontext
 #endif /* !croak */
 
-#define Q_MUST_WORKAROUND (!PERL_VERSION_GE(5,11,0))
+#define Q_MUST_WORKAROUND (!PERL_VERSION_GE(5,12,0))
 #define Q_HAVE_COP_HINTS_HASH PERL_VERSION_GE(5,9,4)
 
 #if Q_MUST_WORKAROUND
@@ -22,6 +22,20 @@
 
 static OP *pp_squashhints(pTHX)
 {
+	/*
+	 * SAVEHINTS() won't actually localise %^H unless the
+	 * HINT_LOCALIZE_HH bit is set.  Normally that bit would be set if
+	 * there were anything in %^H, but when affected by [perl #73174]
+	 * the core's swash-loading code clears $^H without # changing
+	 * %^H, so we set the bit here.  We localise $^H while doing this,
+	 * in order to not clobber $^H across a normal require where the
+	 * bit is legitimately clear, except on Perl 5.11, where the bit
+	 * needs to stay set in order to get proper restoration of %^H.
+	 */
+# if !PERL_VERSION_GE(5,11,0)
+	SAVEI32(PL_hints);
+# endif /* <5.11.0 */
+	PL_hints |= HINT_LOCALIZE_HH;
 	SAVEHINTS();
 	hv_clear(GvHV(PL_hintgv));
 # if Q_HAVE_COP_HINTS_HASH

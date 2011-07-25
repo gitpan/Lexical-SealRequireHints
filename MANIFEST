@@ -2,6 +2,7 @@
 Build.PL
 Changes
 MANIFEST
+META.json
 META.yml
 Makefile.PL
 README
@@ -24,4 +25,6 @@ t/seal_3.pm
 t/seal_4.pm
 t/seal_pp.t
 t/setup_pp.pl
+t/swash.t
+t/swash_pp.t
 SIGNATURE    Added here by Module::Build

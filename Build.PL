@@ -34,12 +34,12 @@ Module::Build->subclass(code => q{
 		# On MSWin32, the XS version of the workaround can't work
 		# properly, because it doesn't have access to the core
 		# symbols to let SAVEHINTS() work.
-		return {} if "$]" < 5.011 && $^O eq "MSWin32";
+		return {} if "$]" < 5.012 && $^O eq "MSWin32";
 		return $self->SUPER::find_xs_files;
 	}
 	sub compile_c {
 		my($self, $file, %args) = @_;
-		if("$]" < 5.011) {
+		if("$]" < 5.012) {
 			# need PERL_CORE for working SAVEHINTS()
 			$args{defines} = { %{$args{defines} || {}},
 				PERL_CORE => 1,
@@ -52,7 +52,7 @@ Module::Build->subclass(code => q{
 	license => "perl",
 	configure_requires => {
 		"Module::Build" => 0,
-		"perl" => "5.006",
+		"perl" => "5.006001",
 		"strict" => 0,
 		"warnings" => 0,
 	},
@@ -62,7 +62,7 @@ Module::Build->subclass(code => q{
 	build_requires => {
 		"Module::Build" => 0,
 		"Test::More" => 0,
-		"perl" => "5.006",
+		"perl" => "5.006001",
 		"strict" => 0,
 		"warnings" => 0,
 	},
@@ -70,7 +70,7 @@ Module::Build->subclass(code => q{
 		"ExtUtils::CBuilder" => "0.15",
 	},
 	requires => {
-		"perl" => "5.006",
+		"perl" => "5.006001",
 		"strict" => 0,
 		"warnings" => 0,
 	},
@@ -78,7 +78,7 @@ Module::Build->subclass(code => q{
 		"XSLoader" => 0,
 	},
 	needs_compiler => 0,
-	dynamic_config => 1,
+	dynamic_config => 0,
 	meta_add => { distribution_type => "module" },
 	create_makefile_pl => "passthrough",
 	sign => 1,

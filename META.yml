@@ -5,17 +5,16 @@ author:
 build_requires:
   Module::Build: 0
   Test::More: 0
-  perl: 5.006
+  perl: 5.006001
   strict: 0
   warnings: 0
 configure_requires:
   Module::Build: 0
-  perl: 5.006
+  perl: 5.006001
   strict: 0
   warnings: 0
-distribution_type: module
-dynamic_config: 1
-generated_by: 'Module::Build version 0.3607'
+dynamic_config: 0
+generated_by: 'Module::Build version 0.38, CPAN::Meta::Converter version 2.110930001'
 license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
@@ -24,13 +23,13 @@ name: Lexical-SealRequireHints
 provides:
   Lexical::SealRequireHints:
     file: lib/Lexical/SealRequireHints.pm
-    version: 0.004
+    version: 0.005
 recommends:
   XSLoader: 0
 requires:
-  perl: 5.006
+  perl: 5.006001
   strict: 0
   warnings: 0
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.004
+version: 0.005

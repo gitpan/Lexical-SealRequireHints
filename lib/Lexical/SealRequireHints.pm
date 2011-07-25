@@ -8,15 +8,25 @@ Lexical::SealRequireHints - prevent leakage of lexical hints
 
 =head1 DESCRIPTION
 
-There is a bug in Perl's handling of the C<%^H> (lexical hints) variable
-that causes lexical state in one file to leak into another that is
-C<require>d/C<use>d from it.  This bug will probably be fixed in Perl
-5.10.2, and is definitely fixed in Perl 5.11.0, but in any earlier
-version it is necessary to work around it.  On versions of Perl that
-require a fix, this module globally changes the behaviour of C<require>
-and C<use> so that they no longer exhibit the bug.  This is the most
-convenient kind of workaround, and is meant to be invoked by modules
-that make use of lexical state.
+This module works around two historical bugs in Perl's handling of the
+C<%^H> (lexical hints) variable.  One bug causes lexical state in one file
+to leak into another that is C<require>d/C<use>d from it.  This bug, [perl
+#68590], was present up to Perl 5.10, fixed in Perl 5.11.0.  The second
+bug causes lexical state (normally a blank C<%^H> once the first bug is
+fixed) to leak outwards from C<utf8.pm>, if it is automatically loaded
+during Unicode regular expression matching, into whatever source is
+compiling at the time of the regexp match.  This bug, [perl #73174],
+was present from Perl 5.8.7 up to Perl 5.11.5, fixed in Perl 5.12.0.
+
+Both of these bugs seriously damage the usability of any module
+relying on C<%^H> for lexical scoping, on the affected Perl versions.
+It is in practice essential for such modules to work around these bugs.
+On versions of Perl that require such a workaround, this module globally
+changes the behaviour of C<require>, including C<use> and the implicit
+C<require> performed in Unicode regular expression matching, so that
+it no longer exhibits these bugs.  This is the most convenient kind of
+workaround, and is meant to be invoked by any module that makes use of
+lexical state.
 
 The workaround supplied by this module takes effect the first time its
 C<import> method is called.  Typically this will be done by means of
@@ -35,11 +45,11 @@ of playing nicely with other modules that modify C<require> handling.
 
 package Lexical::SealRequireHints;
 
-{ use 5.006; }
+{ use 5.006001; }
 use warnings;
 use strict;
 
-our $VERSION = "0.004";
+our $VERSION = "0.005";
 
 if(eval { local $SIG{__DIE__};
 	require XSLoader;
@@ -47,7 +57,7 @@ if(eval { local $SIG{__DIE__};
 	1;
 }) {
 	# successfully loaded XS, nothing else to do
-} elsif("$]" >= 5.011) {
+} elsif("$]" >= 5.012) {
 	# bug not present
 	*import = sub {
 		die "$_[0] does not take any importation arguments\n"
@@ -86,6 +96,20 @@ if(eval { local $SIG{__DIE__};
 			die "wrong number of arguments to require\n"
 				unless @_ == 1;
 			my($arg) = @_;
+			# %^H gets localised (in the magic way it
+			# requires) by the string eval, provided that the
+			# HINT_LOCALIZE_HH bit is set.	Normally that
+			# bit would be set if there were anything in
+			# %^H, but when affected by [perl #73174] the
+			# core's swash-loading code locally clears $^H
+			# without changing %^H, so we set the bit here.
+			# We localise $^H while doing this, in order to
+			# not clobber $^H across a normal require where
+			# the bit is legitimately clear, except on Perl
+			# 5.11, where the bit needs to stay set in order
+			# to get proper restoration of %^H.
+			local $^H = $^H | 0x20000 if "$]" < 5.011;
+			$^H |= 0x20000;
 			my $result = eval q{
 				local $SIG{__DIE__};
 				package }.caller(0).q{;
@@ -114,16 +138,6 @@ that would escape the sealant of this module are rather convoluted.
 If such a problem does occur, a workaround is to invoke this module
 earlier.
 
-This module applies its workaround on any version of Perl prior to 5.11.0.
-It is likely that a later version in the 5.10 series, probably 5.10.2,
-will incorporate a fix for the leakage bug, backported from 5.11.  In that
-case, this module's workaround would be used redundantly on such later
-5.10 versions.  This shouldn't make lexical things behave any worse,
-but it would mean unnecessarily incurring the slight downsides of having
-the workaround in place.  When such a Perl version is released, this
-module will be updated to detect it and avoid unnecessarily applying
-the workaround.
-
 =head1 SEE ALSO
 
 L<perlpragma>
@@ -134,7 +148,7 @@ Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 COPYRIGHT
 
-Copyright (C) 2009, 2010 Andrew Main (Zefram) <zefram@fysh.org>
+Copyright (C) 2009, 2010, 2011 Andrew Main (Zefram) <zefram@fysh.org>
 
 =head1 LICENSE
 
