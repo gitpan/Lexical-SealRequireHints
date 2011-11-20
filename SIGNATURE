@@ -14,18 +14,19 @@ not run its Makefile.PL or Build.PL.
 -----BEGIN PGP SIGNED MESSAGE-----
 Hash: SHA1
 
-SHA1 39964410ca8bc664d83127e39153fb6abe1144c9 .cvsignore
-SHA1 088fbe454e2b5ded641f581d4bfd39e6955ddcba Build.PL
-SHA1 09b884aed154d87c80dcfa2d10ac6e6f681d5148 Changes
-SHA1 78d0bf4ee727f71b12abed8525b9eaab08def411 MANIFEST
-SHA1 f7fc69657797c156f4e480e38a982b7b3cd9fe72 META.json
-SHA1 c4edc686f9452c2090d85d2618ab7d1520fdc5c8 META.yml
+SHA1 6950821fe34951e6170552099d0de2ee22e43714 .gitignore
+SHA1 eef31f8957370f6da7a2595a71bc74519e708c1a Build.PL
+SHA1 280a57340883847a3ea6dd1cef4f9441b829dcdb Changes
+SHA1 c8aba0218c32d1d13000e3a6c7fec1b11c19e014 MANIFEST
+SHA1 db884a2ea4933a82b31715362eb851f144b178fe META.json
+SHA1 e94d36a8f273c1e21edd9ee177566b71c97f04ac META.yml
 SHA1 d26a25db84a1849e046b23a9d8ad14e77aff9cc3 Makefile.PL
 SHA1 445dbe93b4a37d4872d0fa0f8abb55608093cbf9 README
-SHA1 e0daf5c8253b0d834ba0d20236568b20ebdc400e lib/Lexical/.cvsignore
-SHA1 257476d91309a032fbbfabcd31061e4ba01b2005 lib/Lexical/SealRequireHints.pm
+SHA1 31814aaa8a2043ab616c5c283c8f6cae10306c52 lib/Lexical/SealRequireHints.pm
 SHA1 93e790eba6447666ed31c0adb708b013034946c9 lib/Lexical/SealRequireHints.xs
-SHA1 22632eb8a9cdb1a0d40d603bfb81d011b31ccf92 t/override.t
+SHA1 85aaf18e006530f42082c756aa1040649c8b09a0 t/before_warnings.t
+SHA1 61999cf7732bd0ae59043f1718b294598366bdeb t/before_warnings_pp.t
+SHA1 6aafbbe3a1e323d4d05739bd3d3c5b39ecf7d5fa t/override.t
 SHA1 d151cfac8c90f19137177b72eb2bff07488401ea t/override_pp.t
 SHA1 b064a061f38ee4924c7100180e8e8ff877bb25d1 t/package.t
 SHA1 8f88eba8be8441c0e078f3279b9220a2fdcd7c7c t/package_0.pm
@@ -33,20 +34,20 @@ SHA1 4b0236dd669efdacdadba6e11d9fe43364612c58 t/package_pp.t
 SHA1 ec7947b4fd26dfa4c85ce4cddf2e0d9b9f7b6fcc t/pod_cvg.t
 SHA1 3f447b1d0b8a6247c3a311087f8d66da1c3ca5db t/pod_cvg_pp.t
 SHA1 65c75abdef6f01a5d1588a307f2ddfe2333dc961 t/pod_syn.t
-SHA1 7b543dca3bb7994bd7cdb8c3e916fa696efa30c5 t/seal.t
-SHA1 57aca30e4af947909ee7e1e98f241b7eda42b429 t/seal_0.pm
-SHA1 1fa59dddb248c11c7b38fc7e89568825d3442433 t/seal_1.pm
+SHA1 acb31077c8a29e5e11e73dc6a5e0b0cdeb39d2e4 t/seal.t
+SHA1 8f7a77729ec67ed32b8faa2492bb0f4ee4f35744 t/seal_0.pm
+SHA1 881d167b1d9169cef37af0d845af437e90e7869d t/seal_1.pm
 SHA1 77fb76f802a2669291950d830979738ba34ebd71 t/seal_2.pm
 SHA1 8bebdc1f1032ee7e2c3448b8c08eb68a30eaac3f t/seal_3.pm
 SHA1 e8478e388c78af43a2f3b50dd4c2d647dbd3b9ef t/seal_4.pm
 SHA1 bf9f3734c090121ff387eb85351b8abe17d6cff6 t/seal_pp.t
-SHA1 39c1d4fe96c94c66cf69af4ea8875d882c26e699 t/setup_pp.pl
-SHA1 f0b0ee2a7b886cf7d695791439dea076feaaec6a t/swash.t
+SHA1 5fdc293003a1889c491820e55d06d15002089f3e t/setup_pp.pl
+SHA1 fb608255d353cd98087a1b014b327f65d3acb6c2 t/swash.t
 SHA1 c2be3b40bb344403ac14899f5dfe05196373d1f9 t/swash_pp.t
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1.4.10 (GNU/Linux)
 
-iEYEARECAAYFAk4t3h0ACgkQOV9mt2VyAVEsVgCdH06/nNVQBK88utDGPm6uqaNr
-5ZgAoIxML6IpkMudPPJ7chtQKwwRfJCm
-=rlik
+iEYEARECAAYFAk7JgIwACgkQOV9mt2VyAVHSdgCghiyBXhg/I/gVpLuTwp/H7kZC
+dBkAnAxxhmK1auLX8PGB3D2Tqv/wwkQu
+=a3Jc
 -----END PGP SIGNATURE-----

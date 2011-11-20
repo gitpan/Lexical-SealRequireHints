@@ -1,4 +1,4 @@
-.cvsignore
+.gitignore
 Build.PL
 Changes
 MANIFEST
@@ -6,9 +6,10 @@ META.json
 META.yml
 Makefile.PL
 README
-lib/Lexical/.cvsignore
 lib/Lexical/SealRequireHints.pm
 lib/Lexical/SealRequireHints.xs
+t/before_warnings.t
+t/before_warnings_pp.t
 t/override.t
 t/override_pp.t
 t/package.t

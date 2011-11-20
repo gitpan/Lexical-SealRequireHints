@@ -1,6 +1,14 @@
 use warnings;
 use strict;
 
+BEGIN {
+	if("$]" < 5.008) {
+		require Test::More;
+		Test::More::plan(skip_all =>
+			"swash loading disagrees with infrastructure");
+	}
+}
+
 use Test::More tests => 6;
 
 use Lexical::SealRequireHints;

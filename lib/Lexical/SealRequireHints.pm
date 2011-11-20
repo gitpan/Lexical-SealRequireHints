@@ -46,24 +46,31 @@ of playing nicely with other modules that modify C<require> handling.
 package Lexical::SealRequireHints;
 
 { use 5.006001; }
-use warnings;
-use strict;
+# Don't "use warnings" here because warnings.pm can include require
+# statements that execute at runtime, and if they're compiled before
+# this module takes effect then they won't get the magic needed to avoid
+# leaking hints generated later.
 
-our $VERSION = "0.005";
+our $VERSION = "0.006";
 
-if(eval { local $SIG{__DIE__};
-	require XSLoader;
-	XSLoader::load(__PACKAGE__, $VERSION);
-	1;
-}) {
-	# successfully loaded XS, nothing else to do
-} elsif("$]" >= 5.012) {
+if("$]" >= 5.012) {
 	# bug not present
 	*import = sub {
 		die "$_[0] does not take any importation arguments\n"
 			unless @_ == 1;
 	};
 	*unimport = sub { die "$_[0] does not support unimportation\n" };
+} elsif(eval { local $SIG{__DIE__};
+	require XSLoader;
+	XSLoader::load(__PACKAGE__, $VERSION);
+	1;
+}) {
+	# Successfully loaded XS.  Now preemptively load modules that
+	# may be subject to delayed require statements in XSLoader or
+	# things that it loaded.
+	foreach(qw(Carp.pm Carp/Heavy.pm)) {
+		eval { local $SIG{__DIE__}; require($_); };
+	}
 } elsif("$]" >= 5.008) {
 	my $done;
 	*import = sub {
@@ -71,6 +78,7 @@ if(eval { local $SIG{__DIE__};
 			unless @_ == 1;
 		return if $done;
 		$done = 1;
+		# $next_require empirically doesn't work as a my variable.
 		our $next_require = defined(&CORE::GLOBAL::require) ?
 			\&CORE::GLOBAL::require : sub {
 				my($arg) = @_;
@@ -91,7 +99,9 @@ if(eval { local $SIG{__DIE__};
 				die $@ if $@ ne "";
 				return $result;
 			};
-		no warnings "redefine";
+		# Need to suppress the redefinition warning, without
+		# invoking warnings.pm.
+		BEGIN { ${^WARNING_BITS} = ""; }
 		*CORE::GLOBAL::require = sub {
 			die "wrong number of arguments to require\n"
 				unless @_ == 1;

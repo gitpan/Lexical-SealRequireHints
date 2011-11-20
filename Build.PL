@@ -71,11 +71,12 @@ Module::Build->subclass(code => q{
 	},
 	requires => {
 		"perl" => "5.006001",
-		"strict" => 0,
-		"warnings" => 0,
 	},
 	recommends => {
 		"XSLoader" => 0,
+	},
+	conflicts => {
+		"B::Hooks::OP::Check" => "< 0.19",
 	},
 	needs_compiler => 0,
 	dynamic_config => 0,

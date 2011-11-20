@@ -9,7 +9,7 @@ BEGIN {
 	}
 }
 
-use Test::More tests => 10;
+use Test::More tests => 9;
 
 our $have_runtime_hint_hash;
 BEGIN { $have_runtime_hint_hash = "$]" >= 5.009004; }

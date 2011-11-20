@@ -1,7 +1,7 @@
 use warnings;
 use strict;
 
-use Test::More tests => 32;
+use Test::More tests => 30;
 
 our $have_runtime_hint_hash;
 BEGIN { $have_runtime_hint_hash = "$]" >= 5.009004; }

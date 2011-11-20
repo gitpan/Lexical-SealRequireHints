@@ -7,7 +7,9 @@ if("$]" < 5.008) {
 require XSLoader;
 
 my $orig_load = \&XSLoader::load;
-no warnings "redefine";
+# Suppress redefinition warning, without loading warnings.pm, for the
+# benefit of before_warnings.t.
+BEGIN { ${^WARNING_BITS} = ""; }
 *XSLoader::load = sub {
 	die "XS loading disabled for Lexical::SealRequireHints"
 		if ($_[0] || "") eq "Lexical::SealRequireHints";
