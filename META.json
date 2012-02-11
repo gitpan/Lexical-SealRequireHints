@@ -3,7 +3,7 @@
    "author" : [
       "Andrew Main (Zefram) <zefram@fysh.org>"
    ],
-   "dynamic_config" : 0,
+   "dynamic_config" : 1,
    "generated_by" : "Module::Build version 0.38, CPAN::Meta::Converter version 2.112621",
    "license" : [
       "perl_5"
@@ -18,7 +18,7 @@
          "requires" : {
             "Module::Build" : 0,
             "Test::More" : 0,
-            "perl" : "5.006001",
+            "perl" : "5.006",
             "strict" : 0,
             "warnings" : 0
          }
@@ -26,7 +26,7 @@
       "configure" : {
          "requires" : {
             "Module::Build" : 0,
-            "perl" : "5.006001",
+            "perl" : "5.006",
             "strict" : 0,
             "warnings" : 0
          }
@@ -39,14 +39,14 @@
             "XSLoader" : 0
          },
          "requires" : {
-            "perl" : "5.006001"
+            "perl" : "5.006"
          }
       }
    },
    "provides" : {
       "Lexical::SealRequireHints" : {
          "file" : "lib/Lexical/SealRequireHints.pm",
-         "version" : "0.006"
+         "version" : "0.007"
       }
    },
    "release_status" : "stable",
@@ -55,5 +55,5 @@
          "http://dev.perl.org/licenses/"
       ]
    },
-   "version" : "0.006"
+   "version" : "0.007"
 }

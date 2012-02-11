@@ -4,6 +4,8 @@ use strict;
 
 use Module::Build;
 
+my $require_xs = "$]" < 5.007002 || ("$]" >= 5.009004 && "$]" < 5.010001);
+
 Module::Build->subclass(code => q{
 	unless(__PACKAGE__->can("cbuilder")) {
 		*cbuilder = sub { $_[0]->_cbuilder or die "no C support" };
@@ -52,34 +54,49 @@ Module::Build->subclass(code => q{
 	license => "perl",
 	configure_requires => {
 		"Module::Build" => 0,
-		"perl" => "5.006001",
+		"perl" => "5.006",
 		"strict" => 0,
 		"warnings" => 0,
+		($require_xs ? (
+			"ExtUtils::CBuilder" => "0.15",
+		) : ()),
 	},
 	configure_recommends => {
-		"ExtUtils::CBuilder" => "0.15",
+		($require_xs ? () : (
+			"ExtUtils::CBuilder" => "0.15",
+		)),
 	},
 	build_requires => {
 		"Module::Build" => 0,
 		"Test::More" => 0,
-		"perl" => "5.006001",
+		"perl" => "5.006",
 		"strict" => 0,
 		"warnings" => 0,
+		($require_xs ? (
+			"ExtUtils::CBuilder" => "0.15",
+		) : ()),
 	},
 	build_recommends => {
-		"ExtUtils::CBuilder" => "0.15",
+		($require_xs ? () : (
+			"ExtUtils::CBuilder" => "0.15",
+		)),
 	},
 	requires => {
-		"perl" => "5.006001",
+		"perl" => "5.006",
+		($require_xs ? (
+			"XSLoader" => 0,
+		) : ()),
 	},
 	recommends => {
-		"XSLoader" => 0,
+		($require_xs ? () : (
+			"XSLoader" => 0,
+		)),
 	},
 	conflicts => {
 		"B::Hooks::OP::Check" => "< 0.19",
 	},
 	needs_compiler => 0,
-	dynamic_config => 0,
+	dynamic_config => 1,
 	meta_add => { distribution_type => "module" },
 	create_makefile_pl => "passthrough",
 	sign => 1,

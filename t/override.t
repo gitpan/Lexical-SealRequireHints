@@ -2,14 +2,20 @@ use warnings;
 use strict;
 
 BEGIN {
-	if("$]" < 5.008) {
+	if("$]" < 5.007002) {
 		require Test::More;
 		Test::More::plan(skip_all =>
 			"CORE::GLOBAL::require can't work on this perl");
 	}
 }
 
-use Test::More tests => 9;
+use Test::More tests => 10;
+
+our @warnings;
+BEGIN {
+	$^W = 1;
+	$SIG{__WARN__} = sub { push @warnings, $_[0] };
+}
 
 our $have_runtime_hint_hash;
 BEGIN { $have_runtime_hint_hash = "$]" >= 5.009004; }
@@ -60,5 +66,7 @@ BEGIN {
 	isnt scalar(@require_activity), 0;
 	is_deeply \@require_activity, [("b","a") x (@require_activity>>1)];
 }
+
+is_deeply \@warnings, [];
 
 1;

@@ -1,7 +1,13 @@
 use warnings;
 use strict;
 
-use Test::More tests => 30;
+use Test::More tests => 31;
+
+our @warnings;
+BEGIN {
+	$^W = 1;
+	$SIG{__WARN__} = sub { push @warnings, $_[0] };
+}
 
 our $have_runtime_hint_hash;
 BEGIN { $have_runtime_hint_hash = "$]" >= 5.009004; }
@@ -67,5 +73,7 @@ BEGIN {
 	eval { require t::seal_4; };
 	like $@, qr/\Aseal_4 death\n/;
 }
+
+is_deeply \@warnings, [];
 
 1;

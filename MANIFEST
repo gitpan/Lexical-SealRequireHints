@@ -10,6 +10,14 @@ lib/Lexical/SealRequireHints.pm
 lib/Lexical/SealRequireHints.xs
 t/before_warnings.t
 t/before_warnings_pp.t
+t/context.t
+t/context_0.pm
+t/context_1.pm
+t/context_2.pm
+t/context_pp.t
+t/eval.t
+t/eval_0.pm
+t/eval_pp.t
 t/override.t
 t/override_pp.t
 t/package.t
@@ -28,4 +36,6 @@ t/seal_pp.t
 t/setup_pp.pl
 t/swash.t
 t/swash_pp.t
+t/threads.t
+t/threads_pp.t
 SIGNATURE    Added here by Module::Build

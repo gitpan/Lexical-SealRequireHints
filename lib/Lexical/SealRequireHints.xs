@@ -18,6 +18,29 @@
 
 #if Q_MUST_WORKAROUND
 
+# if !PERL_VERSION_GE(5,9,3)
+typedef OP *(*Perl_check_t)(pTHX_ OP *);
+# endif /* <5.9.3 */
+
+# if !PERL_VERSION_GE(5,10,1)
+typedef unsigned Optype;
+# endif /* <5.10.1 */
+
+# ifndef wrap_op_checker
+#  define wrap_op_checker(c,n,o) THX_wrap_op_checker(aTHX_ c,n,o)
+static void THX_wrap_op_checker(pTHX_ Optype opcode,
+Perl_check_t new_checker, Perl_check_t *old_checker_p)
+{
+	if(*old_checker_p) return;
+	OP_REFCNT_LOCK;
+	if(!*old_checker_p) {
+		*old_checker_p = PL_check[opcode];
+		PL_check[opcode] = new_checker;
+	}
+	OP_REFCNT_UNLOCK;
+}
+# endif /* !wrap_op_checker */
+
 # define refcounted_he_free(he) Perl_refcounted_he_free(aTHX_ he)
 
 static OP *pp_squashhints(pTHX)
@@ -81,10 +104,7 @@ import(SV *classname)
 CODE:
 	PERL_UNUSED_VAR(classname);
 #if Q_MUST_WORKAROUND
-	if(!nxck_require) {
-		nxck_require = PL_check[OP_REQUIRE];
-		PL_check[OP_REQUIRE] = myck_require;
-	}
+	wrap_op_checker(OP_REQUIRE, myck_require, &nxck_require);
 #endif /* Q_MUST_WORKAROUND */
 
 void
